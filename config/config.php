@@ -1,0 +1,9 @@
+<?php
+$config=[
+  "remote_dev"=>"/dev/input/event2",
+  "dbpath"=>"/opt/smmc/config/smmc.sqlite",
+  "fifo"=>"/opt/smmc/run/daemon.fifo",
+  "dbus_file"=>"/opt/smmc/run/dbusaddr.txt",
+  "state_file"=>"/opt/smmc/run/state.json",
+  "tmp_dir"=>"/opt/smmc/tmp",
+];

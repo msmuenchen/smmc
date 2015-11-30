@@ -1,0 +1,55 @@
+#!/usr/bin/env php
+<?php
+require(dirname(__FILE__)."/../shared/common.php");
+
+if($argc==0)
+  die("unknown action");
+$act=$argv[1];
+if(!in_array($act,["play","off","terminate","fav","unfav","volup","voldn","mute"]))
+  die("unknown action");
+
+switch($act) {
+  case "play":
+    if($argc!=4)
+      die("unknown type");
+    $type=$argv[2];
+    if(!in_array($type,["station","stream"]))
+      die("unknown type");
+    switch($type) {
+      case "station":
+        $station=getStation($argv[3]);
+        writeFifoCmd(["type"=>"command","data"=>["cmd"=>"play_station","id"=>$station["id"]]]);
+      break;
+      case "stream":
+        writeFifoCmd(["type"=>"command","data"=>["cmd"=>"play_stream","link"=>$argv[3]]]);
+      break;
+      default:
+        die("unknown type");
+    }
+  break;
+  case "off":
+    writeFifoCmd(["type"=>"command","data"=>["cmd"=>"off"]]);
+  break;
+  case "volup":
+    writeFifoCmd(["type"=>"command","data"=>["cmd"=>"volup"]]);
+  break;
+  case "voldn":
+    writeFifoCmd(["type"=>"command","data"=>["cmd"=>"voldn"]]);
+  break;
+  case "mute":
+    writeFifoCmd(["type"=>"command","data"=>["cmd"=>"mute"]]);
+  break;
+  case "terminate":
+    writeFifoCmd(["type"=>"command","data"=>["cmd"=>"terminate"]]);
+  break;
+  case "fav":
+    $station=getStation($argv[2]);
+    writeFifoCmd(["type"=>"command","data"=>["cmd"=>"station_addgroup","id"=>$argv[2],"gid"=>8]]);
+  break;
+  case "unfav":
+    $station=getStation($_GET["id"]);
+    writeFifoCmd(["type"=>"command","data"=>["cmd"=>"station_delgroup","id"=>$argv[2],"gid"=>8]]);
+  break;
+  default:
+    die("unknown action");
+}

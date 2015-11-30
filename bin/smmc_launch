@@ -1,0 +1,5 @@
+#!/usr/bin/env php
+<?php
+require(dirname(__FILE__)."/../shared/common.php");
+detached_exec(SMMC_ROOT."/daemon/daemon.php");
+detached_exec(SMMC_ROOT."/daemon/remote_listener.php");
